@@ -1,3 +1,7 @@
+/**
+ * Created by orrko_000 on 16/06/2017.
+ */
+
 package src;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
