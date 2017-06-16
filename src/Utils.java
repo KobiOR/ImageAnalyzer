@@ -104,6 +104,9 @@ public final class Utils {
 
         if (d!=0) {
             float t = Math.abs((a + b + c) / d);
+            float percentageT=t*100;
+            if (percentageT>100)
+                return 100;
             return t*100;
         }
         else
@@ -113,7 +116,7 @@ public final class Utils {
     private float getDifference(float a,float b){
         float x = a-b;
         float y =b-a;
-        float normalizeNUmber=(x*y-MIN)/(MAX-MIN);
-        return Math.abs(normalizeNUmber);
+        float normalizeNumber=(x*y-MIN)/(MAX-MIN);//Normalize value to range 0-255
+        return Math.abs(normalizeNumber);
     }
 }
