@@ -1,13 +1,30 @@
 package src;
 
+import java.awt.image.BufferedImage;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
  * Created by orrko_000 on 16/06/2017.
  */
+ class Point{
+    public int width;
+    public int height;
+    public boolean checked=false;
+    Point(int width,int height){
+        this.width=width;
+        this.height=height;
+
+    }
+
+}
 public final class Utils {
 
-    public enum COLOR{
+    public Utils() {
+    }
+
+    public enum T_L_COLOR {
         RED,
         GREEN,
         BLACK;
@@ -20,6 +37,9 @@ public final class Utils {
     private final  float[] ESTIMATED_RED={255,0,0};
     private final int MIN=0;
     private final int MAX=255;
+    private int boundaryWidth;
+    private int boundaryHeight;
+    private byte[][] matrix;
 
     public static  void Print(String s) {
       System.out.println(s);
@@ -29,8 +49,8 @@ public final class Utils {
         then use fixer to update the new ESTIMATED_COLOR
         also print the new updated color.
      */
-    public  void improveEstimatedColor(float[] estimatedColor,COLOR colorValue){
-            switch (colorValue){
+    public  void improveEstimatedColor(float[] estimatedColor,T_L_COLOR TLColorValue){
+            switch (TLColorValue){
                 case BLACK:{
                     for (int i = 0; i <3 ; i++) {
                         float temp= (float) (ESTIMATED_BLACK[i]-estimatedColor[i]);
@@ -84,8 +104,8 @@ public final class Utils {
     }
 
     //TODO change to private
-    public float getProportion(float[] pixel,COLOR color){
-        switch (color){
+    public float getProportion(float[] pixel,T_L_COLOR TLColor){
+        switch (TLColor){
             case BLACK: return getPercentageDifference(ESTIMATED_BLACK,pixel);
             case GREEN: return getPercentageDifference(ESTIMATED_GREEN,pixel);
             case RED: return getPercentageDifference(ESTIMATED_RED,pixel);
@@ -119,4 +139,38 @@ public final class Utils {
         float normalizeNumber=(x*y-MIN)/(MAX-MIN);//Normalize value to range 0-255
         return Math.abs(normalizeNumber);
     }
+    public T_L_COLOR checkRecursive(Point minimumPoint, ArrayList<Point> points, BufferedImage filteringImage,BufferedImage originImage){
+        boundaryWidth=filteringImage.getWidth();
+        boundaryHeight = filteringImage.getHeight();
+        matrix=new byte[boundaryWidth][boundaryHeight];
+        ArrayList<Point> points=  findSuspiciousPoints()
+
+        return T_L_COLOR.BLACK;
+    }
+    private void recursive(Point p,byte[][] matrix){
+
+        Thread t1 = new Thread(new Runnable() {
+            public void run()
+            {
+                // code goes here.
+            }});
+        t1.start();
+
+
+
+
+
+
+    }
+    private ArrayList findSuspiciousPoints(BufferedImage image){
+        ArrayList<Point> points=new ArrayList<>();
+        for (int i = 0; i <image.getWidth() ; i++)
+            for (int j = 0; j <image.getHeight() ; j++)
+                if(image.getRGB(i,j)!=16777215){
+                        points.add(new Point(i,j));
+              }
+
+        return points;
+    }
+
 }

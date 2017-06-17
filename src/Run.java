@@ -4,24 +4,27 @@
 
 package src;
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Run {
 
+    static ArrayList<Point> points=new ArrayList();
     static Utils util = new Utils();
+    static Point minPoint=new Point(0,0);
 
     public static void main(String[] args) throws Exception {
 
-    //    Print(String.valueOf(util.getProportion(new float[]{1, 1, 1}, Utils.COLOR.BLACK)));
+    //    Print(String.valueOf(util.getProportion(new float[]{1, 1, 1}, Utils.T_L_COLOR.BLACK)));
 
-        final File dir = new File("red.jpg");
+        final File dir = new File("a.jpg");
         BufferedImage image = ImageIO.read(dir);
         imageAnalyze(image);
 
     }
-
     static void imageAnalyze(BufferedImage image) {
         BufferedImage img=new BufferedImage(image.getWidth(),image.getHeight(),image.getType());
         final int width = image.getWidth();
@@ -35,16 +38,20 @@ public class Run {
             for (int j = 0; j < height; j += 2) {
                 int pixel = image.getRGB(i, j);
                 float chance=checkPixel(pixel);
-                if (chance<50)
-                    img.setRGB(i,j,pixel);
+                if (chance<50) {
+                    img.setRGB(i, j, pixel);
+                    points.add(new Point(i,j));
+                }
                 if (chance<minimum[0]) {
+                    minPoint.height=j;
+                    minPoint.width=i;
                     minimum[0] = chance;
                     minimum[1]=i;
                     minimum[2]=j;
                 }
             }
 
-
+            Utils.T_L_COLOR result=util.checkRecursive(minPoint,points,img);
         }
         System.out.println(minimum[0]);
         System.out.println(minimum[1]);
@@ -63,8 +70,8 @@ public class Run {
         float green = (pixel >> 8) & 0xff;
         float blue = (pixel) & 0xff;
 
-        float redChance=util.getProportion(new float[]{red,green,blue}, Utils.COLOR.RED);
-        float greenChance=util.getProportion(new float[]{red,green,blue}, Utils.COLOR.GREEN);
+        float redChance=util.getProportion(new float[]{red,green,blue}, Utils.T_L_COLOR.RED);
+        float greenChance=util.getProportion(new float[]{red,green,blue}, Utils.T_L_COLOR.GREEN);
         return Math.min(redChance,greenChance);
     }
 
