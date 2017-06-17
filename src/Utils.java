@@ -143,8 +143,10 @@ public final class Utils {
         boundaryWidth=filteringImage.getWidth();
         boundaryHeight = filteringImage.getHeight();
         matrix=new byte[boundaryWidth][boundaryHeight];
-        ArrayList<Point> points=  findSuspiciousPoints()
+        ArrayList<Point> suspiciousPoints=  findSuspiciousPoints(filteringImage);
+        for (Point point:suspiciousPoints){
 
+        }
         return T_L_COLOR.BLACK;
     }
     private void recursive(Point p,byte[][] matrix){
@@ -168,7 +170,15 @@ public final class Utils {
             for (int j = 0; j <image.getHeight() ; j++)
                 if(image.getRGB(i,j)!=16777215){
                         points.add(new Point(i,j));
+                        break;
               }
+
+        for (int i = image.getWidth(); i>=0 ; i--)
+            for (int j = image.getHeight(); j >=0 ; j--)
+                if(image.getRGB(i,j)!=16777215){
+                    points.add(new Point(i,j));
+                    break;
+                }
 
         return points;
     }
