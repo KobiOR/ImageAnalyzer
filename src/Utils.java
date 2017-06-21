@@ -1,6 +1,10 @@
 package src;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -139,7 +143,7 @@ public final class Utils {
         float normalizeNumber=(x*y-MIN)/(MAX-MIN);//Normalize value to range 0-255
         return Math.abs(normalizeNumber);
     }
-    public T_L_COLOR checkRecursive(Point minimumPoint, ArrayList<Point> points, BufferedImage filteringImage,BufferedImage originImage){
+    public T_L_COLOR checkRecursive(Point minimumPoint, ArrayList<Point> points, BufferedImage filteringImage){
         boundaryWidth=filteringImage.getWidth();
         boundaryHeight = filteringImage.getHeight();
         matrix=new byte[boundaryWidth][boundaryHeight];
@@ -168,19 +172,30 @@ public final class Utils {
         ArrayList<Point> points=new ArrayList<>();
         for (int i = 0; i <image.getWidth() ; i++)
             for (int j = 0; j <image.getHeight() ; j++)
-                if(image.getRGB(i,j)!=16777215){
-                        points.add(new Point(i,j));
+                if(new Color(image.getRGB(i,j)).getRed()==new Color(255,255,255)){
+                    image.setRGB(i,j,16711680);
+                    points.add(new Point(i,j));
                         break;
               }
 
-        for (int i = image.getWidth(); i>=0 ; i--)
-            for (int j = image.getHeight(); j >=0 ; j--)
-                if(image.getRGB(i,j)!=16777215){
+        for (int i = image.getWidth()-1; i>=0 ; i--)
+            for (int j = image.getHeight()-1; j >=0 ; j--)
+                if(new Color(image.getRGB(i,j))==new Color(255,255,255)){
+                    image.setRGB(i,j,16711680);
                     points.add(new Point(i,j));
                     break;
                 }
+        File outputfile = new File("d.jpg");
+        try {
+            ImageIO.write(image, "jpg", outputfile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return points;
     }
 
+
+
+    boolean pixelsCompare(int redA,ing)
 }

@@ -4,10 +4,8 @@
 
 package src;
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class Run {
@@ -20,7 +18,7 @@ public class Run {
 
     //    Print(String.valueOf(util.getProportion(new float[]{1, 1, 1}, Utils.T_L_COLOR.BLACK)));
 
-        final File dir = new File("a.jpg");
+        final File dir = new File("green.jpg");
         BufferedImage image = ImageIO.read(dir);
         imageAnalyze(image);
 
@@ -56,12 +54,12 @@ public class Run {
         System.out.println(minimum[0]);
         System.out.println(minimum[1]);
         System.out.println(minimum[2]);
-        File outputfile = new File("image.jpg");
-        try {
-            ImageIO.write(img, "jpg", outputfile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        File outputfile = new File("d.jpg");
+//        try {
+//            ImageIO.write(img, "jpg", outputfile);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
     }
     static float checkPixel(int pixel) {
