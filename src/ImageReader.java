@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Observable;
-import java.util.Timer;
 
 /**
  * Created by orrko_000 on 08/07/2017.
