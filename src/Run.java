@@ -4,28 +4,25 @@
 
 package src;
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
-public class Run {
+public class Run implements Observer {
 
-    static ArrayList<Point> points=new ArrayList();
-    static Utils util = new Utils();
-    static Point minPoint=new Point(0,0);
+    private static ArrayList<Point> points=new ArrayList();
+    private static Utils util = new Utils();
+    private static Point minPoint=new Point(0,0);
 
-    public static void main(String[] args) throws Exception {
-
-    //    Print(String.valueOf(util.getProportion(new float[]{1, 1, 1}, Utils.T_L_COLOR.BLACK)));
-
-        final File dir = new File("a.jpg");
-        BufferedImage image = ImageIO.read(dir);
-        imageAnalyze(image);
-
+    private void start(){
+        ImageReader reader = new ImageReader();
+        reader.addObserver(this);
+        reader.run();
     }
-    static void imageAnalyze(BufferedImage image) {
+    private void imageAnalyze(BufferedImage image) {
         BufferedImage img=new BufferedImage(image.getWidth(),image.getHeight(),image.getType());
         final int width = image.getWidth();
         final int height = image.getHeight();
@@ -38,7 +35,7 @@ public class Run {
             for (int j = 0; j < height; j += 2) {
                 int pixel = image.getRGB(i, j);
                 float chance=checkPixel(pixel);
-                if (chance<50) {
+                if (chance<70) {
                     img.setRGB(i, j, pixel);
                     points.add(new Point(i,j));
                 }
@@ -51,12 +48,12 @@ public class Run {
                 }
             }
 
-            Utils.T_L_COLOR result=util.checkRecursive(minPoint,points,img);
+            //Utils.T_L_COLOR result=util.checkRecursive(minPoint,points,img);
         }
         System.out.println(minimum[0]);
         System.out.println(minimum[1]);
         System.out.println(minimum[2]);
-        File outputfile = new File("image.jpg");
+        File outputfile = new File("red.jpg");
         try {
             ImageIO.write(img, "jpg", outputfile);
         } catch (IOException e) {
@@ -64,7 +61,7 @@ public class Run {
         }
 
     }
-    static float checkPixel(int pixel) {
+    private float checkPixel(int pixel) {
         float alpha = (pixel >> 24) & 0xff;
         float red = (pixel >> 16) & 0xff;
         float green = (pixel >> 8) & 0xff;
@@ -72,7 +69,42 @@ public class Run {
 
         float redChance=util.getProportion(new float[]{red,green,blue}, Utils.T_L_COLOR.RED);
         float greenChance=util.getProportion(new float[]{red,green,blue}, Utils.T_L_COLOR.GREEN);
+        //float blackChance=util.getProportion(new float[]{red,green,blue}, Utils.T_L_COLOR.BLACK);
+
         return Math.min(redChance,greenChance);
+    }
+    public static void main(String[] args){
+        Run programm = new Run();
+        programm.start();
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        ImagePresentation IP= (ImagePresentation) arg;
+        BufferedImage image = IP.bufferedImage;
+        File f=IP.imageFile;
+
+        this.imageAnalyze(image);
+
+        delete(f);
+    }
+    private static void delete(File f) {
+        try {
+
+
+            if (f.delete()) {
+            } else {
+                System.out.println("Delete operation is failed.");
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+
+        }
     }
 
 }
+
+

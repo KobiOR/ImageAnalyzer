@@ -1,7 +1,6 @@
 package src;
 
 import java.awt.image.BufferedImage;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -29,7 +28,7 @@ public final class Utils {
         GREEN,
         BLACK;
 
-    };
+    }
 
     float CONSTANT_DEVIATION=0.00001f;
     private final float[] ESTIMATED_BLACK={0,0,0};
