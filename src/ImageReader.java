@@ -12,8 +12,6 @@ import java.util.Timer;
  * Created by orrko_000 on 08/07/2017.
  */
 public class ImageReader extends Observable implements Runnable {
-    static int INTERVAL=800;
-    static Timer timer;
     static final File dir = new File("C:\\Users\\orrko_000\\Desktop\\inputFolder");
     static final String[] EXTENSIONS = new String[]{"gif", "png", "bmp","jpeg","jpg","JPG","PNG" };
 
